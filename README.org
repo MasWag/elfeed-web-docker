@@ -1,4 +1,5 @@
 
 #+BEGIN_SRC shell
+  ssh-keygen -t ed25519 -f id_ed25519
   docker build -t elfeed-web . && docker run -it --publish=8888:8080 elfeed-web emacs
 #+END_SRC

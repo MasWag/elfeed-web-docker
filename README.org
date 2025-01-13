@@ -1,0 +1,4 @@
+
+#+BEGIN_SRC shell
+  docker build -t elfeed-web . && docker run -it --publish=8888:8080 elfeed-web emacs
+#+END_SRC

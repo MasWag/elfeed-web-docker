@@ -34,7 +34,8 @@
   (defservlet* elfeed/sync-pull application/json ()
     "Pull from remote."
     (with-elfeed-web
-      (elfeed-sync-pull)))
+      (elfeed-sync-pull)
+      (shell-command-to-string "mkdir -p ~/.elfeed/data/ && rsync -av backup:.elfeed/data/ ~/.elfeed/data/")))
   (defservlet* elfeed/sync-push application/json ()
     "Push from remote."
     (with-elfeed-web

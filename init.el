@@ -31,6 +31,14 @@
   :ensure t
   :config
   (setq elfeed-web-data-root "/root/www")
+  (defservlet* elfeed/content/:ref text/html ()
+    "Serve content-addressable content at REF."
+    (with-elfeed-web
+      (let ((content (elfeed-deref (elfeed-ref--create :id ref))))
+        (if content
+            (princ (concat "<html><head><meta charset=\"utf-8\"></head><body>" content "</body></html>"))
+          (princ (json-encode '(:error 404)))
+          (httpd-send-header t "application/json" 404)))))
   (defservlet* elfeed/sync-pull application/json ()
     "Pull from remote."
     (with-elfeed-web

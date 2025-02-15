@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
 # Make ~/.emacs.d directory and copy the init.el file
 RUN mkdir -p /root/.emacs.d
 COPY init.el /root/.emacs.d/init.el
+COPY feeds.el /root/feeds.el
 
 # Execute Emacs to install the packages
 RUN emacs --batch --load ~/.emacs.d/init.el

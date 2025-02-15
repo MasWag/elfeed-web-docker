@@ -78,5 +78,9 @@
   ;; The remote index path for synchronization. Any protocol supported by TRAMP can be used.
   (elfeed-sync-remote-index-path "/rsync:backup:.elfeed/index"))
 
+;; load feeds.el if exits
+(if (file-exists-p "/root/feeds.el")
+    (load-file "/root/feeds.el"))
+
 (provide 'init)
 ;;; init.el ends here

@@ -40,6 +40,24 @@
     "Push from remote."
     (with-elfeed-web
       (elfeed-sync-push)))
+  (defservlet* elfeed/update application/json ()
+    "Update all the feeds in `elfeed-feeds'."
+    (with-elfeed-web
+      (elfeed-update)))
+  (defservlet* elfeed/mark-read/:webid application/json ()
+    "Marks the given entry in the database as read."
+    (with-elfeed-web
+      (with-elfeed-db-visit (entry _)
+        (when (string= webid (elfeed-web-make-webid entry))
+          (elfeed-untag entry 'unread)))
+      (princ (json-encode t))))
+  (defservlet* elfeed/mark-unread/:webid application/json ()
+    "Marks the given entry in the database as unread."
+    (with-elfeed-web
+      (with-elfeed-db-visit (entry _)
+        (when (string= webid (elfeed-web-make-webid entry))
+          (elfeed-tag entry 'unread)))
+      (princ (json-encode t))))
   (elfeed-web-start))
 
 (use-package async

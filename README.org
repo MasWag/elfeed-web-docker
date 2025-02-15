@@ -1,5 +1,12 @@
+* elfeed-web-docker
 
-#+BEGIN_SRC shell
-  ssh-keygen -t ed25519 -f id_ed25519
-  docker build -t elfeed-web . && docker run -it --publish=8888:8080 elfeed-web emacs
-#+END_SRC
+This is a docker image for elfeed-web.
+
+** Usage
+
+1. Put ~feeds.el~ configuring ~elfeed-feeds~
+2. Write ~ssh_config~ file so that the image can access to the backup server with ~ssh backup~
+3. Generate the SSH key with ~ssh-keygen -t ed25519 -f id_ed25519~
+   - The public key must be put in the ~authorized_keys~ file on the server ~backup~
+4. Build the docker image with ~docker build -t elfeed-web .~
+5. Execute the image with ~docker run -it --publish=8080:8080 elfeed-web emacs~

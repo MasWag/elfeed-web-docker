@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     emacs \
     git \
     rsync \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Make ~/.emacs.d directory and copy the init.el file

@@ -33,7 +33,7 @@ img.favicon {
 iframe {
   border: 0;
   width: 100%;
-  max-height: calc(100vh - 370px);
+  height: calc(100vh - 320px);
 }
 
 /* Spacing between feed entries */

@@ -1,3 +1,7 @@
+main {
+  max-height: 100vh;
+}
+
 /* Emphasize unread entries */
 .tag-unread {
   font-weight: bold;
@@ -29,7 +33,7 @@ img.favicon {
 iframe {
   border: 0;
   width: 100%;
-  height: calc(100vh - 290px);
+  max-height: calc(100vh - 370px);
 }
 
 /* Spacing between feed entries */
@@ -49,8 +53,16 @@ iframe {
 }
 
 .scrollable-menu {
-  height: calc(100vh - 230px);
+  height: calc(100vh - 330px);
   overflow-y: auto;
+}
+
+.query-button {
+  width: 19%;
+}
+
+.query-button-icon {
+  font-size: 30px;
 }
 
 /* Subheader styling remains unchanged */
@@ -86,7 +98,7 @@ iframe {
 
 /* Article button width */
 .article-button {
-  width: 32%;
+  width: 30%;
 }
 
 /* Icon color styles for toggles */
@@ -120,4 +132,72 @@ iframe {
 }
 .flagged-toggle.unflagged .flagged-badge {
   color: gray;
+}
+
+/* Container for the hamburger menu */
+.hamburger-menu {
+  position: relative;
+  z-index: 1001;
+}
+
+/* Hamburger Toggle Button */
+.hamburger-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Hamburger Icon Lines */
+.hamburger-icon {
+  display: block;
+  width: 30px;
+  height: 3px;
+  margin: 5px auto;
+  background-color: #333;
+  transition: background-color 0.3s;
+}
+
+/* Sidebar Menu Styling */
+.menu-sidebar {
+  position: fixed;
+  top: 0;
+  left: -220px;  /* Hidden off-canvas initially */
+  width: 200px;
+  height: 100%;
+  background-color: #f4f4f4;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+/* Open state for the sidebar */
+.menu-sidebar.open {
+  left: 0;
+}
+
+/* Buttons inside the sidebar */
+.menu-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+/* Overlay covers the entire page and allows closing the menu on click */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5); /* semi-transparent overlay */
+  z-index: 999; /* must be less than sidebar's z-index */
+}
+
+/* Article button width */
+.youtube-button {
+  width: 48%;
 }

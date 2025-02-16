@@ -28,6 +28,25 @@
 
   <main ng-controller="SearchCtrl">
     <div class="grid-container">
+  <!-- Hamburger Menu Container -->
+  <div class="hamburger-menu" ng-controller="MenuCtrl">
+    <!-- Hamburger Toggle Button -->
+    <button class="hamburger-toggle" ng-click="toggleMenu()" title="Menu">
+      <span class="hamburger-icon"></span>
+      <span class="hamburger-icon"></span>
+      <span class="hamburger-icon"></span>
+    </button>
+
+    <!-- Overlay for closing the menu -->
+    <div class="menu-overlay" ng-show="isMenuOpen" ng-click="toggleMenu()"></div>
+
+    <!-- Sidebar Menu -->
+    <div class="menu-sidebar" ng-class="{'open': isMenuOpen}">
+      <button class="button menu-button" ng-click="pull()">Pull</button>
+      <button class="button menu-button" ng-click="push()">Push</button>
+      <button class="button menu-button" ng-click="feedUpdate()">Update</button>
+    </div>
+  </div>
       <div class="grid-x grid-padding-x">
         <!-- Left Column: Search & List -->
         <div class="cell medium-5">
@@ -35,12 +54,19 @@
             <input id="query" type="text" ng-model="query" ng-change="update()" placeholder="Search feeds">
           </form>
           <div class="button-group">
-            <button class="button small" ng-click="pull()">Pull</button>
-            <button class="button small" ng-click="push()">Push</button>
-            <button class="button" ng-click="query = '+unread'; update()">Unread</button>
-            <button class="button" ng-click="query = '+podcast +unread'; update()">Podcast</button>
-            <button class="button" ng-click="query = '+news -podcast -video +unread'; update()">Text News</button>
-            <button class="button" ng-click="query = '+flagged'; update()">Flagged</button>
+            <button class="query-button button" ng-click="query = '+unread'; update()">
+              <i class="fa fa-solid fa-inbox"></i>
+            </button>
+            <button class="query-button button" ng-click="query = '+podcast +unread'; update()">
+              <i class="fa fa-solid fa-podcast"></i>
+            </button>
+            <button class="query-button button" ng-click="query = '+news -podcast -video +unread'; update()">
+              <i class="fa fa-solid fa-newspaper-o"></i>
+            </button>
+            <button class="query-button button" ng-click="query = '+video +unread'; update()">
+              <i class="fa fa-solid fa-video-camera"></i>
+            </button>
+            <button class="query-button button" ng-click="query = '+flagged'; update()">★</button>
           </div>
           <ul class="vertical menu scrollable-menu">
             <li ng-repeat="entry in entries">
@@ -78,9 +104,9 @@
 
               <!-- Document Toggle Button -->
               <button class="toggle-button document-toggle article-button" ng-click="showLinkIframe = !showLinkIframe" title="Toggle Document View">
-                <i class="fa" 
+                <i class="fa"
                    ng-class="{
-                             'fa-file': showLinkIframe, 
+                             'fa-file': showLinkIframe,
                              'fa-file-o': !showLinkIframe,
                              'colored-icon': showLinkIframe,
                              'gray-icon': !showLinkIframe
@@ -88,8 +114,8 @@
               </button>
 
               <!-- Flag Toggle Button -->
-              <button class="toggle-button flagged-toggle article-button" 
-                      ng-click="toggleFlag(selected)" 
+              <button class="toggle-button flagged-toggle article-button"
+                      ng-click="toggleFlag(selected)"
                       title="Toggle Flag"
                       ng-class="{'unflagged': !selected.classes.includes('tag-flagged')}">
                 <span class="flagged-badge">
@@ -116,8 +142,25 @@
           <!-- For YouTube content when no content is loaded -->
           <div ng-if="selected && selected.link && selected.link.includes('youtube.com') && !selected.content">
             <div class="button-group">
-              <button class="button small" ng-click="markUnread(selected.webid)">Mark As Unread</button>
-              <button class="button small" ng-click="markRead(selected.webid)">Mark As Read</button>
+              <!-- Read/Unread Toggle Button -->
+              <button class="toggle-button read-toggle youtube-button" ng-click="toggleRead(selected)" title="Toggle Read/Unread">
+                <i class="fa"
+                   ng-class="{
+                             'fa-check-square': !selected.classes.includes('tag-unread'),
+                             'fa-square-o': selected.classes.includes('tag-unread'),
+                             'colored-icon': !selected.classes.includes('tag-unread'),
+                             'gray-icon': selected.classes.includes('tag-unread')
+                             }"></i>
+              </button>
+              <!-- Flag Toggle Button -->
+              <button class="toggle-button flagged-toggle youtube-button"
+                      ng-click="toggleFlag(selected)"
+                      title="Toggle Flag"
+                      ng-class="{'unflagged': !selected.classes.includes('tag-flagged')}">
+                  <span class="flagged-badge">
+                      {{ selected.classes.includes('tag-flagged') ? '★' : '☆' }}
+                  </span>
+              </button>
             </div>
             <iframe width="100%" height="400"
                     ng-src="{{ selected.link | youtubeEmbed }}"

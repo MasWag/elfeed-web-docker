@@ -147,3 +147,36 @@ angular.module('elfeedApp')
       return $sce.trustAsResourceUrl(url);
     };
   }]);
+
+angular.module('elfeedApp')
+  .controller('MenuCtrl', ['$scope', function($scope) {
+    $scope.isMenuOpen = false;
+
+    $scope.toggleMenu = function() {
+      $scope.isMenuOpen = !$scope.isMenuOpen;
+    };
+
+    $scope.pull = function() {
+      console.log("Pull action triggered");
+      $http.get(URI('/elfeed/sync-push'))
+        .then(function(response) {
+          $scope.update();
+        });
+    };
+
+    $scope.push = function() {
+      console.log("Push action triggered");
+      $http.get(URI('/elfeed/sync-pull'))
+        .then(function(response) {
+          $scope.update();
+        });
+    };
+
+    $scope.feedUpdate = function() {
+      console.log("Feed update action triggered");
+      $http.get(URI('/elfeed/feed-update'))
+        .then(function(response) {
+          $scope.update();
+        });
+    };
+  }]);

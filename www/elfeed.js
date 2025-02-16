@@ -21,8 +21,8 @@ function entryFill(entry) {
   }).join(' ');
 }
 
-angular.module('elfeedApp', [])
-  .controller('SearchCtrl', ['$scope', '$http', function($scope, $http) {
+angular.module('elfeedApp', ['toastr'])
+  .controller('SearchCtrl', ['$scope', '$http', 'toastr', function($scope, $http, toastr) {
     $scope.query = INITIAL_QUERY;
     $scope.busy = false;
     $scope.dirty = true;
@@ -156,7 +156,7 @@ angular.module('elfeedApp')
   }]);
 
 angular.module('elfeedApp')
-  .controller('MenuCtrl', ['$scope', '$http', function($scope, $http) {
+  .controller('MenuCtrl', ['$scope', '$http', 'toastr', function($scope, $http, toastr) {
     $scope.isMenuOpen = false;
 
     $scope.toggleMenu = function() {
@@ -165,26 +165,46 @@ angular.module('elfeedApp')
 
     $scope.pull = function() {
       console.log("Pull action triggered");
+      toastr.info('Started pulling the feeds');
       $http.get(URI('/elfeed/sync-pull').toString())
         .then(function(response) {
           $scope.update();
+          // Show a success toast message
+          console.log("Successfully pulled the feeds");
+          toastr.success('Successfully pulled the feeds', 'Success');
+        }).catch(function(error) {
+          console.log("Error pulling the feeds");
+          toastr.error('Error pulling the feeds', 'Error');
         });
     };
 
     $scope.push = function() {
       console.log("Push action triggered");
+      toastr.info('Started pushing the feeds');
       $http.get(URI('/elfeed/sync-push').toString())
         .then(function(response) {
           $scope.update();
+          // Show a success toast message
+          console.log("Successfully pushed the feeds");
+          toastr.success('Successfully pushed the feeds', 'Success');
+        }).catch(function(error) {
+          console.log("Error pushing the feeds");
+          toastr.error('Error pushing the feeds', 'Error');
         });
     };
 
     $scope.feedUpdate = function() {
       console.log("Feed update action triggered");
+      toastr.info('Started updating the feeds');
       $http.get(URI('/elfeed/feed-update').toString())
         .then(function(response) {
-          console.log("Feed is updated");
           $scope.update();
+          // Show a success toast message
+          console.log("Feed is updated");
+          toastr.success('Feed is updated', 'Success');
+        }).catch(function(error) {
+          console.log("Error updating the feeds");
+          toastr.error('Error updating the feeds', 'Error');
         });
     };
   }]);

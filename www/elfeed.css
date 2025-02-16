@@ -100,6 +100,12 @@ iframe {
 .article-button {
   width: 30%;
 }
+/* We have four buttons on "small" devices */
+@media (max-width: 640px) {
+  .article-button {
+    width: 22%;
+  }
+}
 
 /* Icon color styles for toggles */
 .colored-icon {
@@ -200,4 +206,10 @@ iframe {
 /* Article button width */
 .youtube-button {
   width: 48%;
+}
+/* We have three buttons on "small" devices */
+@media (max-width: 640px) {
+  .youtube-button {
+    width: 30%;
+  }
 }

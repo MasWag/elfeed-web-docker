@@ -26,6 +26,7 @@ angular.module('elfeedApp', [])
     $scope.query = INITIAL_QUERY;
     $scope.busy = false;
     $scope.dirty = true;
+    $scope.articleMenu = false;
 
     $scope.update = function(blur) {
       if (!$scope.busy) {
@@ -74,6 +75,7 @@ angular.module('elfeedApp', [])
     $scope.selected = null;
     $scope.show = function(entry) {
       $scope.selected = entry;
+      $scope.articleMenu = true;
     };
 
     $scope.markAllRead = function() {
@@ -89,6 +91,11 @@ angular.module('elfeedApp', [])
     $scope.markUnread = function(webid) {
       $http.get(URI('/elfeed/mark-unread/' + webid));
       $scope.update();
+    };
+
+    $scope.closeMenu = function() {
+      console.log('close menu');
+      $scope.articleMenu = false;
     };
 
     $scope.toggleRead = function(selected) {
@@ -149,7 +156,7 @@ angular.module('elfeedApp')
   }]);
 
 angular.module('elfeedApp')
-  .controller('MenuCtrl', ['$scope', function($scope) {
+  .controller('MenuCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.isMenuOpen = false;
 
     $scope.toggleMenu = function() {
@@ -158,7 +165,7 @@ angular.module('elfeedApp')
 
     $scope.pull = function() {
       console.log("Pull action triggered");
-      $http.get(URI('/elfeed/sync-push'))
+      $http.get(URI('/elfeed/sync-pull').toString())
         .then(function(response) {
           $scope.update();
         });
@@ -166,7 +173,7 @@ angular.module('elfeedApp')
 
     $scope.push = function() {
       console.log("Push action triggered");
-      $http.get(URI('/elfeed/sync-pull'))
+      $http.get(URI('/elfeed/sync-push').toString())
         .then(function(response) {
           $scope.update();
         });
@@ -174,8 +181,9 @@ angular.module('elfeedApp')
 
     $scope.feedUpdate = function() {
       console.log("Feed update action triggered");
-      $http.get(URI('/elfeed/feed-update'))
+      $http.get(URI('/elfeed/feed-update').toString())
         .then(function(response) {
+          console.log("Feed is updated");
           $scope.update();
         });
     };

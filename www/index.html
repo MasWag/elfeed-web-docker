@@ -47,9 +47,10 @@
       <button class="button menu-button" ng-click="feedUpdate()">Update</button>
     </div>
   </div>
-      <div class="grid-x grid-padding-x">
+  <div class="grid-x grid-padding-x">
         <!-- Left Column: Search & List -->
-        <div class="cell medium-5">
+          <div class="cell medium-5"
+               ng-class="{'hide-for-small-only': articleMenu}">
           <form ng-submit="update(true)">
             <input id="query" type="text" ng-model="query" ng-change="update()" placeholder="Search feeds">
           </form>
@@ -84,15 +85,22 @@
         </div>
 
         <!-- Right Column: Content/Viewer -->
-        <div class="cell medium-7">
+        <div class="cell medium-7"
+             ng-class="{'hide-for-small-only': !articleMenu}">
           <!-- For non-YouTube content -->
           <div ng-if="selected && selected.content">
             <h4 class="subheader">
               <a ng-href="{{selected.link}}" target="_blank">{{selected.title}}</a>
             </h4>
             <div class="button-group">
-              <!-- Read/Unread Toggle Button -->
-              <button class="toggle-button read-toggle article-button" ng-click="toggleRead(selected)" title="Toggle Read/Unread">
+                <!-- Close the article menu -->
+                <button class="toggle-button read-toggle article-button show-for-small-only"
+                        ng-click="closeMenu()"
+                        title="Close Article">
+                    <i class="fa fa-solid fa-angle-left"></i>
+                </button>
+                <!-- Read/Unread Toggle Button -->
+                <button class="toggle-button read-toggle article-button" ng-click="toggleRead(selected)" title="Toggle Read/Unread">
                 <i class="fa"
                    ng-class="{
                              'fa-check-square': !selected.classes.includes('tag-unread'),
@@ -142,7 +150,13 @@
           <!-- For YouTube content when no content is loaded -->
           <div ng-if="selected && selected.link && selected.link.includes('youtube.com') && !selected.content">
             <div class="button-group">
-              <!-- Read/Unread Toggle Button -->
+                <!-- Close the article menu -->
+                <button class="toggle-button read-toggle article-button show-for-small-only"
+                        ng-click="closeMenu()"
+                        title="Close Article">
+                    <i class="fa fa-solid fa-angle-left"></i>
+                </button>
+                <!-- Read/Unread Toggle Button -->
               <button class="toggle-button read-toggle youtube-button" ng-click="toggleRead(selected)" title="Toggle Read/Unread">
                 <i class="fa"
                    ng-class="{

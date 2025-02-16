@@ -48,3 +48,8 @@ iframe {
 .button-group {
   margin-bottom: 15px;
 }
+
+.scrollable-menu {
+  height: calc(100vh - 230px); /* 100% of the viewport height minus 300px */
+  overflow-y: auto;
+}

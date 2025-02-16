@@ -15,15 +15,15 @@
 </head>
 <body>
 
-  <header>
-    <div class="grid-container">
-      <div class="grid-x grid-padding-x align-center">
-        <div class="cell small-12 medium-8 text-center">
-          <h4>Emacs Elfeed</h4>
-        </div>
-      </div>
-    </div>
-  </header>
+  <!-- <header> -->
+  <!--   <div class="grid-container"> -->
+  <!--     <div class="grid-x grid-padding-x align-center"> -->
+  <!--       <div class="cell small-12 medium-8 text-center"> -->
+  <!--         <h4>Emacs Elfeed</h4> -->
+  <!--       </div> -->
+  <!--     </div> -->
+  <!--   </div> -->
+  <!-- </header> -->
 
   <main ng-controller="SearchCtrl">
     <div class="grid-container">
@@ -41,7 +41,7 @@
             <button class="button" ng-click="query = '+news -podcast -video +unread'; update()">Text News</button>
             <button class="button" ng-click="query = '+flagged'; update()">Flagged</button>
           </div>
-          <ul class="vertical menu">
+          <ul class="vertical menu scrollable-menu">
             <li ng-repeat="entry in entries">
               <img class="favicon" ng-src="{{entry.favicon}}" alt="Favicon">
               <span class="feed-title">{{entry.feed.title}}</span>

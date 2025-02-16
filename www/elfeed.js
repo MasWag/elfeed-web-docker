@@ -67,6 +67,10 @@ angular.module('elfeedApp', [])
     }
     poll();
 
+    $scope.getContentUrl = function(content) {
+      return 'content/' + content;
+    };
+
     $scope.selected = null;
     $scope.show = function(entry) {
       $scope.selected = entry;

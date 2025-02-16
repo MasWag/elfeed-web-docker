@@ -29,8 +29,7 @@ img.favicon {
 iframe {
   border: 0;
   width: 100%;
-  /* Adjust min-height as needed; 400px works better on modern devices */
-  min-height: 400px;
+  height: calc(100vh - 250px);
 }
 
 /* Spacing between feed entries */
@@ -50,6 +49,12 @@ iframe {
 }
 
 .scrollable-menu {
-  height: calc(100vh - 230px); /* 100% of the viewport height minus 300px */
+  height: calc(100vh - 230px);
   overflow-y: auto;
+}
+
+.subheader {
+  white-space: nowrap;      /* Prevents wrapping */
+  overflow: hidden;         /* Hides overflow content */
+  text-overflow: ellipsis;  /* Displays an ellipsis (...) for truncated text */
 }

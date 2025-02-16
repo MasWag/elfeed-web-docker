@@ -90,6 +90,49 @@ angular.module('elfeedApp', [])
       $http.get(URI('/elfeed/mark-unread/' + webid));
       $scope.update();
     };
+
+    $scope.toggleRead = function(selected) {
+      let uri = '';
+      if (selected.classes.includes('tag-unread')) {
+        console.log('Mark ' + selected.title + ' as read');
+        // Remove 'tag-unread' from classes and trim extra spaces
+        selected.classes = selected.classes.replace('tag-unread', '').trim();
+        uri = URI('/elfeed/mark-read/' + selected.webid).toString();
+      } else {
+        console.log('Mark ' + selected.title + ' as unread');
+        // Add 'tag-unread' to classes
+        selected.classes += ' tag-unread';
+        uri = URI('/elfeed/mark-unread/' + selected.webid).toString();
+      }
+      $http.get(uri)
+        .then(function(response) {
+          $scope.update();
+        })
+        .catch(function(error) {
+          console.error("Error toggling read status:", error);
+        });
+    };
+
+    $scope.toggleFlag = function(selected) {
+      let uri = '';
+      if (selected.classes.includes('tag-flagged')) {
+        uri = URI('/elfeed/mark-unflagged/' + selected.webid).toString();
+        // Remove 'tag-flagged' from classes and trim extra spaces
+        selected.classes = selected.classes.replace('tag-flagged', '').trim();
+      } else {
+        console.log('/elfeed/mark-flagged/' + selected.webid);
+        uri = URI('/elfeed/mark-flagged/' + selected.webid).toString();
+        // Add 'tag-flagged' to classes
+        selected.classes += ' tag-flagged';
+      }
+      $http.get(uri)
+        .then(function(response) {
+          $scope.update();
+        })
+        .catch(function(error) {
+          console.error("Error toggling flagged status:", error);
+        });
+    };
   }])
   .filter('youtubeEmbed', ['$sce', function($sce) {
     return function(link) {

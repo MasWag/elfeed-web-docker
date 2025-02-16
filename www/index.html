@@ -11,6 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
   <!-- Updated URI.js (if you still need it) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.19.2/URI.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="elfeed.js"></script>
 </head>
 <body>
@@ -61,13 +62,39 @@
           <!-- For non-YouTube content -->
           <div ng-if="selected && selected.content">
             <h4 class="subheader">
-              <a href="{{selected.link}}" target="_blank">{{selected.title}}</a>
+              <a ng-href="{{selected.link}}" target="_blank">{{selected.title}}</a>
             </h4>
             <div class="button-group">
-              <button class="button small" ng-click="markUnread(selected.webid)">Mark As Unread</button>
-              <button class="button small" ng-click="markRead(selected.webid)">Mark As Read</button>
-              <button class="button small" ng-click="showLinkIframe = !showLinkIframe">
-                Open Link in Iframe
+              <!-- Read/Unread Toggle Button -->
+              <button class="toggle-button read-toggle article-button" ng-click="toggleRead(selected)" title="Toggle Read/Unread">
+                <i class="fa"
+                   ng-class="{
+                             'fa-check-square': !selected.classes.includes('tag-unread'),
+                             'fa-square-o': selected.classes.includes('tag-unread'),
+                             'colored-icon': !selected.classes.includes('tag-unread'),
+                             'gray-icon': selected.classes.includes('tag-unread')
+                             }"></i>
+              </button>
+
+              <!-- Document Toggle Button -->
+              <button class="toggle-button document-toggle article-button" ng-click="showLinkIframe = !showLinkIframe" title="Toggle Document View">
+                <i class="fa" 
+                   ng-class="{
+                             'fa-file': showLinkIframe, 
+                             'fa-file-o': !showLinkIframe,
+                             'colored-icon': showLinkIframe,
+                             'gray-icon': !showLinkIframe
+                             }"></i>
+              </button>
+
+              <!-- Flag Toggle Button -->
+              <button class="toggle-button flagged-toggle article-button" 
+                      ng-click="toggleFlag(selected)" 
+                      title="Toggle Flag"
+                      ng-class="{'unflagged': !selected.classes.includes('tag-flagged')}">
+                <span class="flagged-badge">
+                  {{ selected.classes.includes('tag-flagged') ? '★' : '☆' }}
+                </span>
               </button>
             </div>
             <div ng-repeat="enclosure in selected.enclosures">
@@ -85,8 +112,6 @@
                       width="100%"></iframe>
             </div>
           </div>
-
-
 
           <!-- For YouTube content when no content is loaded -->
           <div ng-if="selected && selected.link && selected.link.includes('youtube.com') && !selected.content">

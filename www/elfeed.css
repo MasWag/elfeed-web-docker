@@ -29,7 +29,7 @@ img.favicon {
 iframe {
   border: 0;
   width: 100%;
-  height: calc(100vh - 250px);
+  height: calc(100vh - 290px);
 }
 
 /* Spacing between feed entries */
@@ -53,8 +53,71 @@ iframe {
   overflow-y: auto;
 }
 
+/* Subheader styling remains unchanged */
 .subheader {
-  white-space: nowrap;      /* Prevents wrapping */
-  overflow: hidden;         /* Hides overflow content */
-  text-overflow: ellipsis;  /* Displays an ellipsis (...) for truncated text */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Base class for all toggle buttons */
+.toggle-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  /* Apply hover/focus background for all toggle buttons */
+}
+.toggle-button:hover,
+.toggle-button:focus {
+  background-color: white !important;
+}
+
+/* Specific margin adjustments */
+.read-toggle {
+  margin-right: 8px;
+}
+.document-toggle {
+  margin-right: 8px;
+}
+.flagged-toggle {
+  margin-left: 8px;
+}
+
+/* Article button width */
+.article-button {
+  width: 32%;
+}
+
+/* Icon color styles for toggles */
+.colored-icon {
+  color: #1779ba;
+}
+.gray-icon {
+  color: #888;
+}
+
+/* Hover effect on icons (using base toggle-button class) */
+.toggle-button:hover i {
+  opacity: 0.8;
+}
+
+/* Flagged badge styling */
+.flagged-badge {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  font-size: 23px;
+}
+
+/* Flagged toggle state: 
+   If the button does not have the .unflagged class, show filled color;
+   otherwise, show gray for unflagged. */
+.flagged-toggle:not(.unflagged) .flagged-badge {
+  color: #f39c12;
+}
+.flagged-toggle.unflagged .flagged-badge {
+  color: gray;
 }

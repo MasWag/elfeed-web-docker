@@ -1,26 +1,50 @@
+/* Emphasize unread entries */
 .tag-unread {
-    font-weight: bold;
+  font-weight: bold;
 }
 
+/* Style for "No results" message */
 .no-results {
-    font-style: italic;
+  font-style: italic;
+  margin-top: 10px;
+  display: block;
 }
 
+/* Favicon images should align nicely with text */
 img.favicon {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-right: 5px;
 }
 
+/* Entry title styling */
 .entry .title {
-    display: block;
+  display: block;
+  margin: 5px 0;
 }
 
+/* Responsive iframe styling */
 iframe {
-    border: 0;
-    min-height: 1024px;
+  border: 0;
+  width: 100%;
+  /* Adjust min-height as needed; 400px works better on modern devices */
+  min-height: 400px;
 }
 
+/* Spacing between feed entries */
 .entry {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+/* Additional spacing for the container elements */
+.grid-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Button group spacing */
+.button-group {
+  margin-bottom: 15px;
 }

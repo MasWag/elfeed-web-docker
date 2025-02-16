@@ -1,109 +1,106 @@
 <!DOCTYPE html>
-<html ng-app>
-  <head>
-    <title>Elfeed Web</title>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/foundation/4.3.1/css/foundation.min.css"/>
-    <link rel="stylesheet" href="elfeed.css"/>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/URI.js/1.7.2/URI.min.js"></script>
-    <script src="elfeed.js"></script>
-  </head>
-  <body>
+<html ng-app="elfeedApp">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Emacs Elfeed</title>
+  <!-- Foundation 6 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites/dist/css/foundation.min.css">
+  <link rel="stylesheet" href="elfeed.css">
+  <!-- AngularJS 1.8.2 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <!-- Updated URI.js (if you still need it) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.19.2/URI.min.js"></script>
+  <script src="elfeed.js"></script>
+</head>
+<body>
 
-    <div class="row">
-      <div class="twelve columns centered panel radius">
-        <h4>Emacs Elfeed</h4>
+  <header>
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x align-center">
+        <div class="cell small-12 medium-8 text-center">
+          <h4>Emacs Elfeed</h4>
+        </div>
       </div>
     </div>
+  </header>
 
-    <div class="row panel" ng-controller="SearchCtrl">
-
-      <div class="large-5 columns">
-        <div>
-
+  <main ng-controller="SearchCtrl">
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <!-- Left Column: Search & List -->
+        <div class="cell medium-5">
           <form ng-submit="update(true)">
-            <input id="query" type="text"
-                   ng-model="query" ng-change="update()"/>
+            <input id="query" type="text" ng-model="query" ng-change="update()" placeholder="Search feeds">
           </form>
-          <!-- <button class="button small" ng-click="markAllRead()"> -->
-          <!--   Mark All As Read -->
-          <!-- </button> -->
-
-          <button class="button small" ng-click="pull()">
-            Pull
-          </button>
-          <button class="button small" ng-click="push()">
-            Push
-          </button>
-          <button class="button small" ng-click="query = '+unread'; update()">
-            Unread
-          </button>
-          <button class="button small" ng-click="query = '+podcast +unread'; update()">
-            Podcast
-          </button>
-          <button class="button small" ng-click="query = '+news -podcast -video +unread'; update()">
-            Text News
-          </button>
-          <button class="button small" ng-click="query = '+flagged'; update()">
-            Flagged
-          </button>
-
-          <ul class="no-bullet">
-            <li class="entry" ng-repeat="entry in entries">
-              <img class="favicon" src="{{entry.favicon}}">
-              <span class="feed-title">
-                {{entry.feed.title}}
-              </span>
-              <time class="secondary label">
-                {{entry.dateString}}
-              </time>
-              <a class="title" href="#" ng-click="show(entry)">
+          <div class="button-group">
+            <button class="button small" ng-click="pull()">Pull</button>
+            <button class="button small" ng-click="push()">Push</button>
+            <button class="button" ng-click="query = '+unread'; update()">Unread</button>
+            <button class="button" ng-click="query = '+podcast +unread'; update()">Podcast</button>
+            <button class="button" ng-click="query = '+news -podcast -video +unread'; update()">Text News</button>
+            <button class="button" ng-click="query = '+flagged'; update()">Flagged</button>
+          </div>
+          <ul class="vertical menu">
+            <li ng-repeat="entry in entries">
+              <img class="favicon" ng-src="{{entry.favicon}}" alt="Favicon">
+              <span class="feed-title">{{entry.feed.title}}</span>
+              <time class="secondary label">{{entry.dateString}}</time>
+              <a href="#" ng-click="show(entry)">
                 <span class="{{entry.classes}}">{{entry.title}}</span>
               </a>
             </li>
-            <span class="no-results" ng-show="!entries.length">
-              No results.
-            </span>
+            <li ng-if="!entries.length">
+              <span class="no-results">No results.</span>
+            </li>
           </ul>
         </div>
-      </div>
 
-      <div class="large-7 columns">
-        <div class="row" ng-show="selected && selected.content">
-          <div class="twelve columns">
+        <!-- Right Column: Content/Viewer -->
+        <div class="cell medium-7">
+          <!-- For non-YouTube content -->
+          <div ng-if="selected && selected.content">
             <h4 class="subheader">
-              <a href="{{selected.link}}" target="_blank">
-                {{selected.title}}
-              </a>
+              <a href="{{selected.link}}" target="_blank">{{selected.title}}</a>
             </h4>
-            <button class="button small" ng-click='markUnread(selected.webid)'>
-              Mark As Unread
-            </button>
-            <button class="button small" ng-click='markRead(selected.webid)'>
-              Mark As Read
-            </button>
-            <div ng-repeat="enclosure in selected.enclosures">
-              <audio controls src="{{enclosure}}"></audio>
+            <div class="button-group">
+              <button class="button small" ng-click="markUnread(selected.webid)">Mark As Unread</button>
+              <button class="button small" ng-click="markRead(selected.webid)">Mark As Read</button>
             </div>
-            <iframe class="twelve columns panel"
-                    sandbox src="/elfeed/content/{{selected.content}}">
+            <div ng-repeat="enclosure in selected.enclosures">
+              <audio controls ng-src="{{enclosure}}"></audio>
+            </div>
+            <iframe class="callout" ng-src="{{'content/' + selected.content | trustedUrl}}" width="100%" height="400">
+            </iframe>
+          </div>
+
+          <!-- For YouTube content when no content is loaded -->
+          <div ng-if="selected && selected.link && selected.link.includes('youtube.com') && !selected.content">
+            <div class="button-group">
+              <button class="button small" ng-click="markUnread(selected.webid)">Mark As Unread</button>
+              <button class="button small" ng-click="markRead(selected.webid)">Mark As Read</button>
+            </div>
+            <iframe width="100%" height="400"
+                    ng-src="{{ selected.link | youtubeEmbed }}"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
             </iframe>
           </div>
         </div>
-        <div class="row" ng-show='selected && selected.link && selected.link.includes("youtube.com")'>
-          <div ng=show="!selected.content">
-            <button class="button small" ng-click='markUnread(selected.webid)'>
-              Mark As Unread
-            </button>
-            <button class="button small" ng-click='markRead(selected.webid)'>
-              Mark As Read
-            </button>
-          </div>
-          <iframe width="100%" src="{{selected.link.replace('watch?v=', 'embed/')}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>          
       </div>
-
     </div>
+  </main>
 
-  </body>
+  <footer>
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x align-center">
+        <div class="cell shrink">
+          <p>&copy; {{ currentYear || '2025' }} Emacs Elfeed. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
 </html>
